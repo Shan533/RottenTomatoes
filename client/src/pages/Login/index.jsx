@@ -9,7 +9,16 @@ function Login() {
 
   return (
     <div className="grid grid-cols-2 h-screen">
-      <div className="bg-primary"></div>
+      <div className="bg-primary flex flex-col items-center justify-center">
+        <div>
+          <h1 className="text-6xl text-green-400 font-semibold">
+            ROTTEN TOMATOES
+          </h1>
+          <p className="text-gray-300 mt-2 text-xl tracking-wider text-center">
+            A place for picky students all around the world.
+          </p>
+        </div>
+      </div>
 
       <div className="flex items-center justify-center">
         <div className="w-[500px]">
@@ -24,7 +33,9 @@ function Login() {
               <input />
             </Form.Item>
             <Form.Item label="Password" name="password">
-              <input />
+              <input
+                type="password"
+              />
             </Form.Item>
 
             <div className="flex flex-col gap-5">
@@ -32,8 +43,8 @@ function Login() {
                 Login
               </Button>
 
-              <Link to="/register" className="mt-2">
-                Don't have an account? Register
+              <Link to="/register">
+                Don't have an account? Register here.
               </Link>
             </div>
           </Form>
