@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 // Register
 router.post("/register", async (req, res) => {
@@ -28,7 +29,11 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     // Check if user exists
-    const user = await User.find({ email: req.body.email });
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) throw new Error("User with this email does not exist");
+
+    // Check if user is active
+    if (!user.isActive) throw new Error("User is not active");
 
     // Check if password is correct
     const isPasswordCorrect = await bcrypt.compare(
@@ -47,6 +52,20 @@ router.post("/login", async (req, res) => {
       message: "User logged in successfully",
       success: true,
       data: token,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, success: false });
+  }
+});
+
+// Get current user (protected)
+router.get("/get-current-user", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select("password");
+    res.status(200).json({
+      message: "User fetched successfully",
+      success: true,
+      data: user,
     });
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });

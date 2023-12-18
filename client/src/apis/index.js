@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from "axios";
 
 const apiRequest = async ({ method, endPoint, payload, queryStrings }) => {
   try {
@@ -10,12 +10,16 @@ const apiRequest = async ({ method, endPoint, payload, queryStrings }) => {
         params: queryStrings,
       },
       {
-        headers: {},
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }
     );
     return response.data;
   } catch (error) {
-    throw error;
+    throw new Error(
+      error.response.data.message || error.message || "Something went wrong"
+    );
   }
 };
 
