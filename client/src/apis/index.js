@@ -8,12 +8,10 @@ const apiRequest = async ({ method, endPoint, payload, queryStrings }) => {
         url: endPoint,
         data: payload,
         params: queryStrings,
-      },
-      {
         headers: {
           authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {

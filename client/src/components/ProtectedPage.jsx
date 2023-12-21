@@ -15,11 +15,9 @@ function ProtectedPage({ children }) {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/login");
-    } else {
+    
       getCurrentUser();
-    }
+    
   }, []);
 
   return (

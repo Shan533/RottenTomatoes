@@ -12,9 +12,9 @@ function App() {
           <Route
             path="/"
             element={
-              
+              <ProtectedPage>
                 <Home />
-              
+              </ProtectedPage>
             }
           />
           <Route path="/login" element={<Login />} />
