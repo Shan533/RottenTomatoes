@@ -3,6 +3,7 @@ import { Form, Button, message, Input, App } from "antd";
 import { Link } from "react-router-dom";
 import { RegisterUser } from "../../apis/users";
 import { useNavigate } from "react-router-dom";
+import { antValidationError } from "../../helpers";
 
 function Register() {
   const navigate = useNavigate();
@@ -15,6 +16,12 @@ function Register() {
       message.error(error.message);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="grid grid-cols-2 h-screen">
@@ -38,13 +45,21 @@ function Register() {
             className="flex flex-col gap-5 mt-3"
             onFinish={onFinish}
           >
-            <Form.Item label="Username" name="username">
+            <Form.Item
+              label="Username"
+              name="username"
+              rules={antValidationError}
+            >
               <Input />
             </Form.Item>
-            <Form.Item label="Email" name="email">
+            <Form.Item label="Email" name="email" rules={antValidationError}>
               <Input />
             </Form.Item>
-            <Form.Item label="Password" name="password">
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={antValidationError}
+            >
               <Input.Password />
             </Form.Item>
 

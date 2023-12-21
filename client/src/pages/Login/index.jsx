@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Form, Button, message, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../apis/users";
+import { antValidationError } from "../../helpers";
 
 function Login() {
   const navigate = useNavigate();
@@ -15,6 +16,12 @@ function Login() {
       message.error(error.message);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="grid grid-cols-2 h-screen">
@@ -38,10 +45,14 @@ function Login() {
             className="flex flex-col gap-5 mt-3"
             onFinish={onFinish}
           >
-            <Form.Item label="Email" name="email">
+            <Form.Item label="Email" name="email" rules={antValidationError}>
               <Input />
             </Form.Item>
-            <Form.Item label="Password" name="password">
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={antValidationError}
+            >
               <Input type="password" />
             </Form.Item>
 
