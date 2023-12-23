@@ -2,14 +2,17 @@ import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import { GetCurrentUser } from "../apis/users";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { SetUser } from "../redux/usersSlice";
 
 function ProtectedPage({ children }) {
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
   const getCurrentUser = async () => {
     try {
       const response = await GetCurrentUser();
-      setUser(response.data);
+      dispatch(SetUser(response.data));
     } catch (error) {
       message.error(error.message);
     }
@@ -43,7 +46,7 @@ function ProtectedPage({ children }) {
               navigate("/profile");
             }}
           >
-            Shanshan
+            {user?.name}
           </span>
           <i
             className="ri-logout-box-r-line ml-8"

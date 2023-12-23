@@ -47,7 +47,7 @@ function Register() {
           >
             <Form.Item
               label="Username"
-              name="username"
+              name="name"
               rules={antValidationError}
             >
               <Input />
