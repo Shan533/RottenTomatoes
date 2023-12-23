@@ -5,8 +5,10 @@ const dbConfig = require("./config/dbConfig");
 app.use(express.json());
 
 const usersRoute = require("./routes/usersRoute");
+const schoolsRoute = require("./routes/schoolsRoute");
 
 app.use("/api/users", usersRoute);
+app.use("/api/schools", schoolsRoute);
 
 const cors = require("cors");
 app.use(cors());
