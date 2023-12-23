@@ -42,7 +42,7 @@ function ProtectedPage({ children }) {
         </span>
 
         <div className="bg-white rounded px-5 py-2 flex gap-2">
-          <i class="ri-shield-user-line"></i>
+          <i className="ri-shield-user-line"></i>
           <span
             className="text-primary text-sm cursor-pointer underline"
             onClick={() => {
@@ -61,7 +61,7 @@ function ProtectedPage({ children }) {
         </div>
       </div>
 
-      <div>{children}</div>
+      {user && <div className="p-5">{children}</div>}
     </div>
   );
 }
