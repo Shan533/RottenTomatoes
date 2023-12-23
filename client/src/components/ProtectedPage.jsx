@@ -4,6 +4,7 @@ import { GetCurrentUser } from "../apis/users";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../redux/usersSlice";
+import { SetLoading } from "../redux/loadersSlice";
 
 function ProtectedPage({ children }) {
   const dispatch = useDispatch();
@@ -11,7 +12,9 @@ function ProtectedPage({ children }) {
   const navigate = useNavigate();
   const getCurrentUser = async () => {
     try {
+      dispatch(SetLoading(true));
       const response = await GetCurrentUser();
+      dispatch(SetLoading(false));
       dispatch(SetUser(response.data));
     } catch (error) {
       message.error(error.message);

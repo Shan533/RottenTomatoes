@@ -3,16 +3,22 @@ import { Form, Button, message, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../apis/users";
 import { antValidationError } from "../../helpers";
+import { useDispatch } from "react-redux";
+import { SetLoading } from "../../redux/loadersSlice";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onFinish = async (values) => {
     try {
+      dispatch(SetLoading(true));
       const response = await LoginUser(values);
+      dispatch(SetLoading(false));
       localStorage.setItem("token", response.data);
       message.success(response.message);
       navigate("/");
     } catch (error) {
+      dispatch(SetLoading(false));
       message.error(error.message);
     }
   };
