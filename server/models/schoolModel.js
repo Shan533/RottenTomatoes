@@ -13,6 +13,10 @@ const schoolSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    initial: {
+      type: String,
+      required: true,
+    },
     country: {
       type: String,
       required: true,
