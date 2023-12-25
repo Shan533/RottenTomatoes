@@ -1,11 +1,24 @@
 import React from "react";
-import { Form, Modal, Input } from "antd";
-import {antValidationError} from "../../../helpers"
+import { Button, Form, Input, Modal, Tabs, Upload, message } from "antd";
+import { antValidationError } from "../../../helpers";
+import { useDispatch } from "react-redux";
+import { AddSchool } from "../../../apis/schools";
+import { SetLoading } from "../../../redux/loadersSlice";
 
 function SchoolForm({ showSchoolForm, setShowSchoolForm }) {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const onFinish = (values) => {
-    console.log(values);
+  const onFinish = async (values) => {
+    try {
+      dispatch(SetLoading(true));
+      const response = await AddSchool(values);
+      dispatch(SetLoading(false));
+      message.success(response.message);
+      setShowSchoolForm(false);
+    } catch (error) {
+      message.error(error.message);
+      dispatch(SetLoading(false));
+    }
   };
 
   return (
@@ -26,8 +39,7 @@ function SchoolForm({ showSchoolForm, setShowSchoolForm }) {
         onFinish={onFinish}
         form={form}
       >
-        <Form.Item label="Name" name="name"
-        rules={antValidationError}>
+        <Form.Item label="Name" name="name" rules={antValidationError}>
           <Input />
         </Form.Item>
 
@@ -52,25 +64,41 @@ function SchoolForm({ showSchoolForm, setShowSchoolForm }) {
           <Form.Item label="Country" name="country" rules={antValidationError}>
             <Input type="text" />
           </Form.Item>
-          <Form.Item label="Location" name="location" rules={antValidationError}>
+          <Form.Item
+            label="Location"
+            name="location"
+            rules={antValidationError}
+          >
             <Input type="text" />
           </Form.Item>
         </div>
 
         <div className="grid grid-cols-2 gap-5">
-          <Form.Item label="Year Founded" name="year" rules={antValidationError}>
-            <Input type="month" />
+          <Form.Item
+            label="Year Founded"
+            name="year"
+            rules={antValidationError}
+          >
+            <Input type="number" />
           </Form.Item>
-          <Form.Item label="Ranking QS" name="rankingQS" rules={antValidationError}>
+          <Form.Item
+            label="Ranking QS"
+            name="rankingQS"
+            rules={antValidationError}
+          >
             <Input type="number" />
           </Form.Item>
         </div>
 
         <Form.Item label="Link" name="link" rules={antValidationError}>
-          <Input type="url" />
+          <Input type="text" />
         </Form.Item>
 
-        <Form.Item label="Profile Pic" name="profilePic" rules={antValidationError}>
+        <Form.Item
+          label="Profile Pic"
+          name="profilePic"
+          rules={antValidationError}
+        >
           <Input type="text" />
         </Form.Item>
       </Form>

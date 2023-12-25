@@ -9,11 +9,11 @@ const schoolSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    type: {
+    initial: {
       type: String,
       required: true,
     },
-    initial: {
+    type: {
       type: String,
       required: true,
     },
@@ -41,7 +41,7 @@ const schoolSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createBy: {
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
       required: true,
