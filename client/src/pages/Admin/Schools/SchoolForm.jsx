@@ -2,16 +2,28 @@ import React from "react";
 import { Button, Form, Input, Modal, Tabs, Upload, message } from "antd";
 import { antValidationError } from "../../../helpers";
 import { useDispatch } from "react-redux";
-import { AddSchool } from "../../../apis/schools";
+import { AddSchool, UpdateSchool } from "../../../apis/schools";
 import { SetLoading } from "../../../redux/loadersSlice";
 
-function SchoolForm({ showSchoolForm, setShowSchoolForm }) {
+function SchoolForm({
+  showSchoolForm,
+  setShowSchoolForm,
+  selectedSchool,
+  reloadData,
+}) {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+
   const onFinish = async (values) => {
     try {
       dispatch(SetLoading(true));
-      const response = await AddSchool(values);
+      let response;
+      if (selectedSchool) {
+        response = await UpdateSchool(selectedSchool._id, values);
+      } else {
+        response = await AddSchool(values);
+      }
+      reloadData();
       dispatch(SetLoading(false));
       message.success(response.message);
       setShowSchoolForm(false);
@@ -25,10 +37,10 @@ function SchoolForm({ showSchoolForm, setShowSchoolForm }) {
     <Modal
       open={showSchoolForm}
       onCancel={() => setShowSchoolForm(false)}
-      title="Add School"
+      title={selectedSchool ? "Edit School" : "Add School"}
       centered
       width={800}
-      okText="Add"
+      okText={selectedSchool ? "Update" : "Add"}
       onOk={() => {
         form.submit();
       }}
@@ -38,6 +50,7 @@ function SchoolForm({ showSchoolForm, setShowSchoolForm }) {
         className="flex flex-col gap-5"
         onFinish={onFinish}
         form={form}
+        initialValues={selectedSchool}
       >
         <Form.Item label="Name" name="name" rules={antValidationError}>
           <Input />
