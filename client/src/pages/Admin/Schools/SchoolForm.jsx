@@ -37,7 +37,7 @@ function SchoolForm({
     <Modal
       open={showSchoolForm}
       onCancel={() => setShowSchoolForm(false)}
-      title={selectedSchool ? "Edit School" : "Add School"}
+      title=""
       centered
       width={800}
       okText={selectedSchool ? "Update" : "Add"}
@@ -52,6 +52,9 @@ function SchoolForm({
         form={form}
         initialValues={selectedSchool}
       >
+        <div className="h1 text-center font-semibold text-gray-600 text-2xl uppercase">
+          {selectedSchool ? "Update" : "Add"} School
+        </div>
         <Form.Item label="Name" name="name" rules={antValidationError}>
           <Input />
         </Form.Item>

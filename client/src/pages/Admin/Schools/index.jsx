@@ -4,7 +4,7 @@ import SchoolForm from "./SchoolForm";
 import { useDispatch } from "react-redux";
 import { SetLoading } from "../../../redux/loadersSlice";
 import { Button, Table, message } from "antd";
-import { GetAllSchools } from "../../../apis/schools";
+import { DeleteSchool, GetAllSchools } from "../../../apis/schools";
 import { getDateFormat, getDateTimeFormat } from "../../../helpers";
 
 function Schools() {
@@ -19,6 +19,19 @@ function Schools() {
       dispatch(SetLoading(true));
       const response = await GetAllSchools();
       setSchools(response.data);
+      dispatch(SetLoading(false));
+    } catch (error) {
+      message.error(error.message);
+      dispatch(SetLoading(false));
+    }
+  };
+
+  const deleteSchool = async (id) => {
+    try {
+      dispatch(SetLoading(true));
+      const response = await DeleteSchool(id);
+      message.success(response.message);
+      fetchSchools();
       dispatch(SetLoading(false));
     } catch (error) {
       message.error(error.message);
@@ -79,7 +92,12 @@ function Schools() {
                 setShowSchoolForm(true);
               }}
             ></i>
-            <i className="ri-delete-bin-line"></i>
+            <i
+              className="ri-delete-bin-line"
+              onClick={() => {
+                deleteSchool(record._id);
+              }}
+            ></i>
           </div>
         );
       },
