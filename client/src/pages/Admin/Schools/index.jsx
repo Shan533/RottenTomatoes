@@ -44,7 +44,8 @@ function Schools() {
       title: "School",
       dataIndex: "profile",
       render: (text, record) => {
-        return <img src={record?.profilePic} alt="" className="h-8" />;
+        const imageUrl = record?.images?.[0] || "";
+        return <img src={imageUrl} alt="" className="h-8" />;
       },
     },
     {

@@ -20,7 +20,9 @@ router.post(
         folder: "RottenPotatoes",
       });
       const imageUrl = response.secure_url;
-      res.status(200).json({ message: "Image uploaded", data: imageUrl });
+      res
+        .status(200)
+        .json({ message: "Image uploaded", data: imageUrl, success: true });
     } catch (error) {
       res.status(500).json({ message: error.message, success: false });
     }

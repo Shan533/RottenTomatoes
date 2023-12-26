@@ -37,9 +37,9 @@ const schoolSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    profilePic: {
-      type: String,
-      required: true,
+    images: {
+      type: [],
+      required: false,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
