@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 
 // schools: name type country location year QS USNews link
-// programs: name fullname school description link application length total-tuition rating
-// application: toefl ielts gre ddl
 const schoolSchema = new mongoose.Schema(
   {
     name: {

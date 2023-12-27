@@ -1,5 +1,14 @@
 import React from "react";
-import { Button, Form, Input, Modal, Tabs, Upload, message } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Modal,
+  Tabs,
+  Upload,
+  message,
+  Select,
+} from "antd";
 import { antValidationError } from "../../../helpers";
 import { useDispatch } from "react-redux";
 import { AddSchool, UpdateSchool } from "../../../apis/schools";
@@ -17,6 +26,15 @@ function SchoolForm({
   const [selectedTab, setSelectedTab] = React.useState("1");
   const [file, setFile] = React.useState(null);
   const [form] = Form.useForm();
+
+  const schoolTypes = [
+    { value: "public", label: "Public" },
+    { value: "private", label: "Private" },
+    { value: "research", label: "Research" },
+    { value: "liberalArts", label: "Liberal Arts" },
+    { value: "community", label: "Community" },
+    { value: "other", label: "Other" },
+  ];
 
   const onFinish = async (values) => {
     try {
@@ -119,15 +137,7 @@ function SchoolForm({
                   <Input type="text" />
                 </Form.Item>
                 <Form.Item label="Type" name="type" rules={antValidationError}>
-                  <select>
-                    <option value="">Select</option>
-                    <option value="Public">Public</option>
-                    <option value="Private">Private</option>
-                    <option value="Research">Research</option>
-                    <option value="Liberal Arts">Liberal Arts</option>
-                    <option value="Community">Community</option>
-                    <option value="Other">Other</option>
-                  </select>
+                  <Select options={schoolTypes} defaultValue="select" />
                 </Form.Item>
               </div>
 
