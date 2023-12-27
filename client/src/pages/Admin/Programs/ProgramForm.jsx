@@ -1,28 +1,51 @@
 import React from "react";
-import { Form, Tabs, Select, Button } from "antd";
+import { Form, Tabs, Select, Button, message } from "antd";
 import { antValidationError } from "../../../helpers";
+import { useDispatch } from "react-redux";
+import { SetLoading } from "../../../redux/loadersSlice";
+import { GetAllSchools } from "../../../apis/schools";
+import { useNavigate } from "react-router-dom";
 
 function ProgramForm() {
-  const tempOptions = [
-    {
-      value: "1",
-      label: "1",
-    },
-    {
-      value: "2",
-      label: "2",
-    },
-    {
-      value: "3",
-      label: "3",
-    },
-  ];
+  const [schools = [], setSchools] = React.useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const getSchools = async () => {
+    try {
+      dispatch(SetLoading(true));
+      const response = await GetAllSchools();
+      setSchools(
+        response.data.map((school) => ({
+          value: school._id,
+          label: school.name,
+        }))
+      );
+      dispatch(SetLoading(false));
+    } catch (error) {
+      message.error(error.message);
+      dispatch(SetLoading(false));
+    }
+  };
+
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
+  React.useEffect(() => {
+    getSchools();
+  }, []);
+
   return (
     <div>
       <h1 className="text-gray-600 text-xl font-semibold">Add Program</h1>
       <Tabs>
         <Tabs.TabPane tab="Details" key="1">
-          <Form layout="vertical" className="flex flex-col gap-5">
+          <Form
+            layout="vertical"
+            className="flex flex-col gap-5"
+            onFinish={onFinish}
+          >
             <div className="grid grid-cols-3 gap-5">
               <Form.Item
                 label="Name"
@@ -47,7 +70,7 @@ function ProgramForm() {
                 name="school"
                 rules={antValidationError}
               >
-                <Select options={tempOptions} />
+                <Select options={schools} showSearch />
               </Form.Item>
               <Form.Item
                 label="Link"
@@ -92,7 +115,13 @@ function ProgramForm() {
               <textarea />
             </Form.Item>
             <div className="flex justify-end gap-5">
-              <Button>Cancel</Button>
+              <Button
+                onClick={() => {
+                  navigate("/admin");
+                }}
+              >
+                Cancel
+              </Button>
               <Button htmlType="submit" type="primary">
                 Save
               </Button>
