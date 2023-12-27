@@ -20,7 +20,6 @@ function SchoolForm({
   setShowSchoolForm,
   selectedSchool,
   reloadData,
-  setSelectedSchool,
 }) {
   const dispatch = useDispatch();
   const [selectedTab, setSelectedTab] = React.useState("1");
