@@ -12,7 +12,8 @@ const programSchema = new mongoose.Schema(
       required: true,
     },
     school: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "schools",
       required: true,
     },
     degree: {
@@ -27,26 +28,81 @@ const programSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    // show by domestic currency
+    currency: {
+      type: String,
+      required: true,
+    },
     totalTuition: {
       type: Number,
       required: true,
     },
+
+    isSTEM: {
+      type: String,
+      required: true,
+    },
+
+    description: {
+      type: String,
+      required: false,
+    },
+
+    /**
+     * Requirements
+     * add or update in tab 2
+     */
+
+    // 0-120
+    toefl: {
+      type: String,
+      required: false,
+    },
+    //0-9
+    ielts: {
+      type: String,
+      required: false,
+    },
+    //other language
+    otherTests: {
+      type: String,
+      required: false,
+    },
+
+    gre: {
+      type: String,
+      required: false,
+    },
+    portfolio: {
+      type: String,
+      required: false,
+    },
+    gpa: {
+      type: String,
+      required: false,
+    },
+    classSize: {
+      type: Number,
+      required: false,
+    },
+    deadline: {
+      type: Date,
+      required: false,
+    },
+    otherRequirements: {
+      type: String,
+      required: false,
+    },
+
     // rank by student ratings
     rankingByStudents: {
       type: Number,
-      require: false,
+      required: false,
     },
-    description: {
-      type: String,
-      required: true,
+    difficulty: {
+      type: Number,
+      required: false,
     },
-    // new Schema: application requirements
-    // language, GRE, DDL (date), size, difficulty(1-5)
-    applicationRequirements: {
-      type: String,
-      required: true,
-    },
+
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
