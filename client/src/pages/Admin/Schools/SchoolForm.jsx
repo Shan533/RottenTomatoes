@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { AddSchool, UpdateSchool } from "../../../apis/schools";
 import { UploadImage } from "../../../apis/images";
 import { SetLoading } from "../../../redux/loadersSlice";
+import { schoolTypes, countryOptions } from "./constants";
 
 function SchoolForm({
   showSchoolForm,
@@ -25,15 +26,6 @@ function SchoolForm({
   const [selectedTab, setSelectedTab] = React.useState("1");
   const [file, setFile] = React.useState(null);
   const [form] = Form.useForm();
-
-  const schoolTypes = [
-    { value: "public", label: "Public" },
-    { value: "private", label: "Private" },
-    { value: "research", label: "Research" },
-    { value: "liberalArts", label: "Liberal Arts" },
-    { value: "community", label: "Community" },
-    { value: "other", label: "Other" },
-  ];
 
   const onFinish = async (values) => {
     try {
@@ -146,7 +138,7 @@ function SchoolForm({
                   name="country"
                   rules={antValidationError}
                 >
-                  <Input type="text" />
+                  <Select options={countryOptions} defaultValue="select" />
                 </Form.Item>
                 <Form.Item
                   label="Location"
@@ -175,14 +167,6 @@ function SchoolForm({
               </div>
 
               <Form.Item label="Link" name="link" rules={antValidationError}>
-                <Input type="text" />
-              </Form.Item>
-
-              <Form.Item
-                label="Profile Pic"
-                name="profilePic"
-                rules={antValidationError}
-              >
                 <Input type="text" />
               </Form.Item>
             </Form>
