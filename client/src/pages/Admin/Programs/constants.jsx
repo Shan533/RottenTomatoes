@@ -19,13 +19,13 @@ export const currencyOptions = [
 ];
 
 export const requiredOptions = [
-  { value: "true", label: "Y" },
-  { value: "false", label: "" },
+  { value: "Y", label: "Y" },
+  { value: "N", label: "N" },
   { value: "optional", label: "Optional" },
 ];
 
 export const booleanOptions = [
-  { value: "true", label: "Y" },
-  { value: "false", label: "N" },
+  { value: "Y", label: "Y" },
+  { value: "N", label: "N" },
   { value: "", label: "Not Applicable" },
 ];

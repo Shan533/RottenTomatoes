@@ -18,10 +18,19 @@ router.post("/", authMiddleware, async (req, res) => {
 // get all programs
 router.get("/", async (req, res) => {
   try {
-    const Programs = await Program.find()
+    const filters = req.query;
+    const query = {};
+    if (filters.school) {
+      query.school = filters.school;
+    }
+    if (filters.degree) {
+      query.degree = filters.degree;
+    }
+    const programs = await Program.find(query)
       .populate("school")
-      .populate("createdBy");
-    res.status(200).json({ programs, success: true });
+      .populate("createdBy")
+      .sort({ createdAt: -1 });
+    res.status(200).json({ data: programs, success: true });
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });
   }
@@ -30,10 +39,10 @@ router.get("/", async (req, res) => {
 // get program by id
 router.get("/:id", async (req, res) => {
   try {
-    const Programs = await Program.findById(req.params.id)
+    const program = await Program.findById(req.params.id)
       .populate("school")
       .populate("createdBy");
-    res.status(200).json({ programs, success: true });
+    res.status(200).json({ data: program, success: true });
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });
   }
@@ -42,8 +51,16 @@ router.get("/:id", async (req, res) => {
 // update program
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
-    await Program.findByIdAndUpdate(req.params.id, req.body);
-    res.send({ message: "Program updated successfully", success: true });
+    const updatedProgram = await Program.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.send({
+      message: "Program updated successfully",
+      success: true,
+      data: updatedProgram,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });
   }
@@ -52,8 +69,15 @@ router.put("/:id", authMiddleware, async (req, res) => {
 // delete program
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
-    await Program.findByIdAndDelete(req.params.id);
-    res.send({ message: "Program deleted successfully", success: true });
+    const updatedProgram = await Program.findByIdAndDelete(req.params.id, {
+      new: true,
+    });
+
+    res.send({
+      message: "Program deleted successfully",
+      success: true,
+      data: updatedProgram,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });
   }

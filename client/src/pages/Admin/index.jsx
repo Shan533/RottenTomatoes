@@ -4,13 +4,24 @@ import Programs from "./Programs";
 import Schools from "./Schools";
 import Users from "./Users";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Admin() {
+  const [activeTab, setActiveTab] = React.useState("1");
   const { user } = useSelector((state) => state.users);
+  const navigate = useNavigate();
+
   return (
     <div>
       {user?.isAdmin ? (
-        <Tabs>
+        <Tabs
+          defaultActiveKey="1"
+          activeKey={activeTab}
+          onChange={(key) => {
+            setActiveTab(key);
+            navigate(`/admin?tab=/${key}`);
+          }}
+        >
           <Tabs.TabPane tab="Programs" key="1">
             <Programs />
           </Tabs.TabPane>
@@ -23,7 +34,7 @@ function Admin() {
         </Tabs>
       ) : (
         <div className="text-gray-600 text-md text-center mt-20">
-            You are not authorized to view this page.
+          You are not authorized to view this page.
         </div>
       )}
     </div>
