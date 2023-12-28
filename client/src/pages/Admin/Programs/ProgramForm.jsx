@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { SetLoading } from "../../../redux/loadersSlice";
 import { GetAllSchools } from "../../../apis/schools";
 import { useNavigate } from "react-router-dom";
+import { degreeTypes } from "./constants";
 
 function ProgramForm() {
   const [schools = [], setSchools] = React.useState([]);
@@ -37,7 +38,7 @@ function ProgramForm() {
   }, []);
 
   return (
-    <div>
+    <div className="pl-10 pr-10">
       <h1 className="text-gray-600 text-xl font-semibold">Add Program</h1>
       <Tabs>
         <Tabs.TabPane tab="Details" key="1">
@@ -47,12 +48,7 @@ function ProgramForm() {
             onFinish={onFinish}
           >
             <div className="grid grid-cols-3 gap-5">
-              <Form.Item
-                label="Name"
-                name="name"
-                rules={antValidationError}
-                className="col-span-2"
-              >
+              <Form.Item label="Name" name="name" rules={antValidationError}>
                 <input />
               </Form.Item>
               <Form.Item
@@ -62,9 +58,6 @@ function ProgramForm() {
               >
                 <input />
               </Form.Item>
-            </div>
-
-            <div className="grid grid-cols-3 gap-5">
               <Form.Item
                 label="School"
                 name="school"
@@ -72,16 +65,12 @@ function ProgramForm() {
               >
                 <Select options={schools} showSearch />
               </Form.Item>
-              <Form.Item
-                label="Link"
-                name="link"
-                rules={antValidationError}
-                className="col-span-2"
-              >
-                <input />
-              </Form.Item>
             </div>
+
             <div className="grid grid-cols-3 gap-5">
+              <Form.Item label="Degree Type" name="degree">
+                <Select options={degreeTypes} />
+              </Form.Item>
               <Form.Item
                 label="Length"
                 name="length"
@@ -95,6 +84,16 @@ function ProgramForm() {
                 rules={antValidationError}
               >
                 <input type="number" step="1000" />
+              </Form.Item>
+            </div>
+            <div className="grid grid-cols-3 gap-5">
+              <Form.Item
+                label="Link"
+                name="link"
+                rules={antValidationError}
+                className="col-span-2"
+              >
+                <input />
               </Form.Item>
               <Form.Item label="Ranking by Students" name="rankingByStudents">
                 <input type="number" />

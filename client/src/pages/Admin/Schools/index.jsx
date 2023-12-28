@@ -45,7 +45,7 @@ function Schools() {
       dataIndex: "profile",
       render: (text, record) => {
         const imageUrl = record?.images?.[0] || "";
-        return <img src={imageUrl} alt="" className="h-8" />;
+        return <img src={imageUrl} alt="" className="logo" />;
       },
     },
     {
