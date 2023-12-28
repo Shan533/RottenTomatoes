@@ -18,16 +18,8 @@ router.post("/", authMiddleware, async (req, res) => {
 // get all programs
 router.get("/", async (req, res) => {
   try {
-    const filters = req.query;
-    const query = {};
-    if (filters.school) {
-      query.school = filters.school;
-    }
-    if (filters.degree) {
-      query.degree = filters.degree;
-    }
-    const programs = await Program.find(query)
-      .populate("school")
+    const programs = await Program.find()
+      .populate("schoolOf")
       .populate("createdBy")
       .sort({ createdAt: -1 });
     res.status(200).json({ data: programs, success: true });
@@ -40,7 +32,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const program = await Program.findById(req.params.id)
-      .populate("school")
+      .populate("schoolOf")
       .populate("createdBy");
     res.status(200).json({ data: program, success: true });
   } catch (error) {

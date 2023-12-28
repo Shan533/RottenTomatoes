@@ -44,7 +44,7 @@ function Programs() {
     {
       title: "",
       render: (text, record) => {
-        const imageUrl = record?.school.images?.[0] || "";
+        const imageUrl = record?.schoolOf.images?.[0] || "";
         return <img src={imageUrl} alt="" className="logo" />;
       },
     },
@@ -58,9 +58,9 @@ function Programs() {
     },
     {
       title: "School",
-      dataIndex: "school",
+      dataIndex: "schoolOf",
       render: (text, record) => {
-        return <div>{record?.school?.initial}</div>;
+        return <div>{record?.schoolOf?.initial}</div>;
       },
     },
     {

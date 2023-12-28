@@ -11,7 +11,7 @@ const programSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    school: {
+    schoolOf: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "schools",
       required: true,
