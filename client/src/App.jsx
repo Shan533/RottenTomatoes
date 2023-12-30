@@ -8,6 +8,7 @@ import Spinner from "./components/Spinner";
 import { useSelector } from "react-redux";
 import Admin from "./pages/Admin";
 import ProgramForm from "./pages/Admin/Programs/ProgramForm";
+import ProgramInfo from "./pages/ProgramInfo";
 
 function App() {
   const { loading } = useSelector((state) => state.loaders);
@@ -21,6 +22,14 @@ function App() {
             element={
               <ProtectedPage>
                 <Home />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/program/:id"
+            element={
+              <ProtectedPage>
+                <ProgramInfo />
               </ProtectedPage>
             }
           />
