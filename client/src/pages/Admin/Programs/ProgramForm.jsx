@@ -152,7 +152,7 @@ function ProgramForm() {
                 rules={antValidationError}
                 className="col-span-2"
               >
-                <input type="number" step="1000" />
+                <input type="number" />
               </Form.Item>
             </div>
             <Form.Item

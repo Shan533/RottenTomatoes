@@ -12,5 +12,5 @@ export const getDateTimeFormat = (date) => {
 };
 
 export const getDateFormat = (date) => {
-  return moment(date).format("MMMM Do YYYY");
+  return moment(date).format("MMM Do YYYY");
 };
