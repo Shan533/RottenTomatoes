@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { message, Rate } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { SetLoading } from "../../redux/loadersSlice";
-import { DeleteProgram, GetAllPrograms } from "../../apis/programs";
+import { GetAllPrograms } from "../../apis/programs";
 import { getDateFormat } from "../../helpers";
 import { useNavigate } from "react-router-dom";
 
