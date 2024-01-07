@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { message, Rate } from "antd";
+import { message, Rate, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { SetLoading } from "../../redux/loadersSlice";
 import {
@@ -9,12 +9,14 @@ import {
 } from "../../apis/programs";
 import { getDateFormat } from "../../helpers";
 import { useNavigate, useParams } from "react-router-dom";
+import ReviewForm from "./ReviewForm";
 
 function ProgramInfo() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [program, setProgram] = useState();
   const { id } = useParams();
+  const [showReviewForm, setShowReviewForm] = useState(false);
 
   const getData = async () => {
     try {
@@ -144,6 +146,20 @@ function ProgramInfo() {
         </div>
 
         <hr />
+        <div className="flex justify-between items-center mt-5">
+          <span className="text-xl font-semibold">Reviews</span>
+          <Button type="default" onClick={() => setShowReviewForm(true)}>
+            Add review
+          </Button>
+        </div>
+        {showReviewForm && (
+          <ReviewForm
+            program={program}
+            reloadData={getData}
+            showReviewForm={showReviewForm}
+            setShowReviewForm={setShowReviewForm}
+          />
+        )}
       </div>
     )
   );

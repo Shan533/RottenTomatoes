@@ -65,8 +65,9 @@ function Home() {
               <span>Rating</span>
               <Rate
                 disabled
-                defaultValue={program?.rankingByStudents || 0}
+                defaultValue={program?.rating || 0}
                 allowHalf
+                style={{ color: "orange" }}
               />
             </div>
           </div>

@@ -1,18 +1,24 @@
 const Review = require("../models/reviewModel");
 const router = require("express").Router();
 const authMiddleware = require("../middlewares/authMiddleware");
+const Program = require("../models/programModel");
+const mongoose = require("mongoose");
 
 // add review
 
-router.post("/add", authMiddleware, async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
   try {
+    req.body.user = req.userId;
     const newReview = new Review(req.body);
     await newReview.save();
 
     // calculate average rating and update in program
+    const programId = new mongoose.Types.ObjectId(req.body.program);
     const averageRating = await Review.aggregate([
       {
-        $match: { program: req.body.program },
+        $match: {
+          program: programId,
+        },
       },
       {
         $group: {
@@ -24,7 +30,7 @@ router.post("/add", authMiddleware, async (req, res) => {
 
     const averageRatingValue = averageRating[0]?.averageRating || 0;
 
-    await Program.findOneAndUpdate(req.body.program, {
+    await Program.findOneAndUpdate(programId, {
       rating: averageRatingValue,
     });
 
@@ -38,9 +44,10 @@ router.post("/add", authMiddleware, async (req, res) => {
 
 // get all reviews by program id
 
-router.get("/get", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { program } = req.query;
+
     const reviews = await Review.find({ program })
       .populate("users")
       .populate("program");
