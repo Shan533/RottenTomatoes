@@ -8,11 +8,13 @@ const usersRoute = require("./routes/usersRoute");
 const schoolsRoute = require("./routes/schoolsRoute");
 const imagesRoute = require("./routes/imagesRoute");
 const programsRoute = require("./routes/programsRoute");
+const reviewsRoute = require("./routes/reviewsRoute");
 
 app.use("/api/users", usersRoute);
 app.use("/api/schools", schoolsRoute);
 app.use("/api/images", imagesRoute);
 app.use("/api/programs", programsRoute);
+app.use("/api/reviews", reviewsRoute);
 
 const cors = require("cors");
 app.use(cors());

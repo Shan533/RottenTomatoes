@@ -94,13 +94,15 @@ const programSchema = new mongoose.Schema(
     },
 
     // rank by student ratings
-    rankingByStudents: {
+    rating: {
       type: Number,
       required: false,
+      default: 0,
     },
     difficulty: {
       type: Number,
       required: false,
+      default: 0,
     },
 
     createdBy: {
