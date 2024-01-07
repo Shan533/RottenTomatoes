@@ -112,7 +112,7 @@ function ProgramInfo() {
           </div>
         </div>
 
-        <span className="py-5 text-gray-600 text-sm">
+        <span className="py-5 text-gray-600 text-sm mb-10">
           {program?.description || "No comment"}
         </span>
 
@@ -120,17 +120,25 @@ function ProgramInfo() {
           <span className="text-gray-600 font-semibold text-xl">
             School Info
           </span>
-          <div className="mt-2 flex gap-5">
+          <div className="mt-2 flex gap-10">
             <img
               src={program?.schoolOf?.images[0] || ""}
               alt=""
-              className="w-20"
+              className="cursor-pointer w-28"
             />
 
-            <div className="flex flex-col">
-              <span className="text-md font-semibold text-gray-600 w-96 mb-2">
+            <div className="flex flex-col  gap-1">
+              <span className="text-md font-semibold text-gray-600 mb-2 cursor-pointer hover:text-pink-500">
                 {program?.schoolOf?.name}
               </span>
+              <div className="flex justify-between text-sm">
+                <span>Location</span>
+                <span>{program?.schoolOf?.location}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span>QS</span>
+                <span>{program?.schoolOf?.rankingQS}</span>
+              </div>
             </div>
           </div>
         </div>
