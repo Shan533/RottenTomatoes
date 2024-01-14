@@ -46,9 +46,7 @@ router.post("/", authMiddleware, async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const { program } = req.query;
-
-    const reviews = await Review.find({ program })
+    const reviews = await Review.find(req.params)
       .sort({ createdAt: -1 })
       .populate("user")
       .populate("program");

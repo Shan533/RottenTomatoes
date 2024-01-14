@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// schools: name type country location year QS USNews link
 const schoolSchema = new mongoose.Schema(
   {
     name: {

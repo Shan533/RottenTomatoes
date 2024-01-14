@@ -6,20 +6,22 @@ import { SetLoading } from "../../redux/loadersSlice";
 import { GetSchoolById } from "../../apis/schools";
 
 import { useNavigate, useParams } from "react-router-dom";
+import { GetProgramsBySchoolId } from "../../apis/programs";
 
 function School() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
   const [school, setSchool] = useState(null);
-  const [program, setProgram] = useState([]);
+  const [programs, setPrograms] = useState([]);
 
   const getData = async () => {
     try {
       dispatch(SetLoading(true));
       const schoolResponse = await GetSchoolById(id);
       setSchool(schoolResponse.data);
-
+      const programsResponse = await GetProgramsBySchoolId(id);
+      setPrograms(programsResponse.data);
       dispatch(SetLoading(false));
     } catch (error) {
       dispatch(SetLoading(false));
@@ -82,6 +84,28 @@ function School() {
                 <span></span>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div id="Programs" className="mt-5 mb-10">
+          <span className="text-gray-600 font-semibold text-xl">Programs</span>
+          <div className="mt-2 flex gap-10">
+            {programs.map((program) => {
+              return (
+                <div
+                  key={school?._id}
+                  className="cursor-pointer flex flex-col"
+                  onClick={() => navigate(`/school/${school?._id}`)}
+                >
+                  <img
+                    src={school?.images[0] || ""}
+                    alt=""
+                    className="cursor-pointer w-28"
+                  />
+                  <span className="text-sm text-gray-600">{program?.name}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

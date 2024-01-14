@@ -18,6 +18,7 @@ router.post("/", authMiddleware, async (req, res) => {
 // get all programs
 router.get("/", async (req, res) => {
   try {
+    const { school } = req.params;
     const programs = await Program.find()
       .populate("schoolOf")
       .populate("createdBy")
@@ -70,6 +71,17 @@ router.delete("/:id", authMiddleware, async (req, res) => {
       success: true,
       data: updatedProgram,
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message, success: false });
+  }
+});
+
+// get programs by school id
+router.get("/get-programs-by-school/:id", async (req, res) => {
+  try {
+    const schoolId = req.params.id;
+    const programs = await Program.find({ schoolOf: schoolId });
+    res.status(200).json({ data: programs, success: true });
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });
   }
