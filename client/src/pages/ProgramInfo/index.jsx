@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { message, Rate, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { SetLoading } from "../../redux/loadersSlice";
-import {
-  DeleteProgram,
-  GetAllPrograms,
-  GetProgramById,
-} from "../../apis/programs";
+import { GetProgramById } from "../../apis/programs";
 import { GetAllReviews } from "../../apis/reviews";
 import { getDateFormat, getDateTimeFormat } from "../../helpers";
 import { useNavigate, useParams } from "react-router-dom";
@@ -41,7 +37,7 @@ function ProgramInfo() {
   return (
     program && (
       <div>
-        <div className="flex flex-col lg:flex-row gap-10 mb-5">
+        <div id="ProgramInfo" className="flex flex-col lg:flex-row gap-10 mb-5">
           <img
             src={program?.schoolOf?.images[0] || ""}
             alt=""
@@ -118,11 +114,11 @@ function ProgramInfo() {
           </div>
         </div>
 
-        <span className="py-5 text-gray-600 text-sm mb-10">
+        <span id="Description" className="py-5 text-gray-600 text-sm mb-10">
           {program?.description || "No comment"}
         </span>
 
-        <div className="mt-5 mb-10">
+        <div id="SchoolInfo" className="mt-5 mb-10">
           <span className="text-gray-600 font-semibold text-xl">
             School Info
           </span>
@@ -131,6 +127,7 @@ function ProgramInfo() {
               src={program?.schoolOf?.images[0] || ""}
               alt=""
               className="cursor-pointer w-28"
+              onClick={() => navigate(`/school/${program?.schoolOf?._id}`)}
             />
 
             <div className="flex flex-col  gap-1">

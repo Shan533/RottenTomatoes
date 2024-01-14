@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import Admin from "./pages/Admin";
 import ProgramForm from "./pages/Admin/Programs/ProgramForm";
 import ProgramInfo from "./pages/ProgramInfo";
+import School from "./pages/School";
 
 function App() {
   const { loading } = useSelector((state) => state.loaders);
@@ -30,6 +31,14 @@ function App() {
             element={
               <ProtectedPage>
                 <ProgramInfo />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/school/:id"
+            element={
+              <ProtectedPage>
+                <School />
               </ProtectedPage>
             }
           />
