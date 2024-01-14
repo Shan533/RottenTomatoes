@@ -8,7 +8,7 @@ export const antValidationError = [
 ];
 
 export const getDateTimeFormat = (date) => {
-  return moment(date).format("MMMM Do YYYY, h:mm:ss a");
+  return moment(date).format("MMM Do YYYY, h:mm A");
 };
 
 export const getDateFormat = (date) => {

@@ -7,7 +7,8 @@ import {
   GetAllPrograms,
   GetProgramById,
 } from "../../apis/programs";
-import { getDateFormat } from "../../helpers";
+import { GetAllReviews } from "../../apis/reviews";
+import { getDateFormat, getDateTimeFormat } from "../../helpers";
 import { useNavigate, useParams } from "react-router-dom";
 import ReviewForm from "./ReviewForm";
 
@@ -17,11 +18,14 @@ function ProgramInfo() {
   const [program, setProgram] = useState();
   const { id } = useParams();
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
   const getData = async () => {
     try {
       dispatch(SetLoading(true));
       const response = await GetProgramById(id);
+      const reviewsResponse = await GetAllReviews({ program: id });
+      setReviews(reviewsResponse.data);
       setProgram(response.data);
       dispatch(SetLoading(false));
     } catch (error) {
@@ -151,6 +155,37 @@ function ProgramInfo() {
           <Button type="default" onClick={() => setShowReviewForm(true)}>
             Add review
           </Button>
+        </div>
+        <div className="mt-5 flex flex-col gap-2">
+          {reviews.map((review) => {
+            return (
+              <div
+                key={review?._id}
+                className="flex justify-between border-solid border p-2 rounded-sm border-gray-300"
+              >
+                <div className="flex flex-col">
+                  <span className="text-gray-600 font-semibold text-md">
+                    {review?.user?.name}
+                  </span>
+                  <Rate
+                    disabled
+                    defaultValue={review?.rating || 0}
+                    allowHalf
+                    style={{ color: "darkred" }}
+                    className="mt-2"
+                  />
+                  <span className="text-gray-600 text-sm">
+                    {review?.comment}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-gray-600 text-sm">
+                    {getDateTimeFormat(review?.createdAt)}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
         {showReviewForm && (
           <ReviewForm

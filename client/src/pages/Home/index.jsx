@@ -67,7 +67,7 @@ function Home() {
                 disabled
                 defaultValue={program?.rating || 0}
                 allowHalf
-                style={{ color: "orange" }}
+                style={{ color: "darkred" }}
               />
             </div>
           </div>

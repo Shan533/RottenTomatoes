@@ -49,7 +49,8 @@ router.get("/", async (req, res) => {
     const { program } = req.query;
 
     const reviews = await Review.find({ program })
-      .populate("users")
+      .sort({ createdAt: -1 })
+      .populate("user")
       .populate("program");
 
     res.status(200).json({ data: reviews, success: true });
