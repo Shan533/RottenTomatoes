@@ -36,3 +36,10 @@ export const DeleteProgram = async (id) => {
     endPoint: `/api/programs/${id}`,
   });
 };
+
+export const GetProgramsBySchoolId = async (id) => {
+  return await apiRequest({
+    method: "GET",
+    endPoint: `/api/programs/get-programs-by-school/${id}`,
+  });
+};
