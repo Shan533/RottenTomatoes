@@ -9,7 +9,7 @@ router.post("/register", async (req, res) => {
   try {
     // Check if user already exists
     const userExists = await User.findOne({ email: req.body.email });
-    if (userExists) throw new Error("User with this email already exists.");
+    if (userExists) throw new Error("User with this email already exists");
 
     // Hash password
     req.body.password = await bcrypt.hash(req.body.password, 10);
@@ -66,6 +66,46 @@ router.get("/get-current-user", authMiddleware, async (req, res) => {
       message: "User fetched successfully",
       success: true,
       data: user,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, success: false });
+  }
+});
+
+router.put("/update-user", authMiddleware, async (req, res) => {
+  try {
+    if (req.body.newPassword && req.body.oldPassword) {
+      const oldPassword = req.body.oldPassword;
+      const user = await User.findById(req.body._id);
+      const isPasswordCorrect = await bcrypt.compare(
+        oldPassword,
+        user.password
+      );
+      if (!isPasswordCorrect) throw new Error("The old password is incorrect");
+
+      const newPassword = await bcrypt.hash(req.body.newPassword, 10);
+      req.body.password = newPassword;
+    }
+    const updatedUser = await User.findByIdAndUpdate(req.body._id, req.body, {
+      new: true,
+    }).select("-password");
+    res.status(200).json({
+      message: "User updated successfully",
+      success: true,
+      data: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, success: false });
+  }
+});
+
+router.get("/get-all-users", async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+    res.status(200).json({
+      message: "Users fetched successfully",
+      success: true,
+      data: users,
     });
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });

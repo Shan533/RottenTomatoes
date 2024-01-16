@@ -22,3 +22,18 @@ export const GetCurrentUser = async () => {
     endPoint: "/api/users/get-current-user",
   });
 };
+
+export const UpdateUser = async (payload) => {
+  return await apiRequest({
+    method: "PUT",
+    endPoint: "/api/users/update-user",
+    payload,
+  });
+};
+
+export const GetAllUsers = async () => {
+  return await apiRequest({
+    method: "GET",
+    endPoint: "/api/users/get-all-users",
+  });
+};

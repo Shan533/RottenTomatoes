@@ -1,6 +1,7 @@
 import React from "react";
 import { Tabs } from "antd";
 import Reviews from "./Reviews";
+import UserDetails from "./UserDetails";
 
 function Profile() {
   return (
@@ -9,7 +10,7 @@ function Profile() {
         <Reviews />
       </Tabs.TabPane>
       <Tabs.TabPane tab="Profile" key="2">
-        Profile
+        <UserDetails />
       </Tabs.TabPane>
     </Tabs>
   );
