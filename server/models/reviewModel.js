@@ -17,11 +17,13 @@ const reviewSchema = new mongoose.Schema(
     },
     program: {
       type: mongoose.Schema.Types.ObjectId,
-      red: "programs",
+      ref: "programs",
       required: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 module.exports = mongoose.model("reviews", reviewSchema);

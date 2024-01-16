@@ -148,12 +148,24 @@ function ProgramInfo() {
 
         <hr />
         <div className="flex justify-between items-center mt-5">
-          <span className="text-xl font-semibold">Reviews</span>
+          <span className="text-xl font-semibold">
+            Reviews
+            <Rate
+              disabled
+              defaultValue={program?.rating || 0}
+              allowHalf
+              style={{ color: "darkred" }}
+              className="ml-5 cursor-pointer"
+              onClick={() => setShowReviewForm(true)}
+            />
+          </span>
+
           <Button type="default" onClick={() => setShowReviewForm(true)}>
-            Add review
+            Add Review
           </Button>
         </div>
-        <div className="mt-5 flex flex-col gap-2">
+
+        <div id="show-reviews" className="mt-5 flex flex-col gap-2">
           {reviews.map((review) => {
             return (
               <div
@@ -175,6 +187,7 @@ function ProgramInfo() {
                     {review?.comment}
                   </span>
                 </div>
+
                 <div className="flex flex-col">
                   <span className="text-gray-600 text-sm">
                     {getDateTimeFormat(review?.createdAt)}
@@ -184,6 +197,7 @@ function ProgramInfo() {
             );
           })}
         </div>
+
         {showReviewForm && (
           <ReviewForm
             program={program}
