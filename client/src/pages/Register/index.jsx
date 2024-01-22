@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Form, Button, message, Input} from "antd";
+import { Form, Button, message, Input } from "antd";
 import { Link } from "react-router-dom";
 import { RegisterUser } from "../../apis/users";
 import { useNavigate } from "react-router-dom";
@@ -30,20 +30,20 @@ function Register() {
   }, []);
 
   return (
-    <div className="grid grid-cols-2 h-screen">
-      <div className="bg-primary flex flex-col items-center justify-center">
+    <div className="grid lg:grid-cols-2 h-screen">
+      <div className="bg-primary flex flex-col items-center justify-center lg:pt-0 pt-16">
         <div>
-          <h1 className="text-6xl text-green-400 font-semibold tracking-wider">
+          <h1 className="lg:text-6xl lg:text-left text-center text-green-400 font-semibold tracking-wider text-3xl">
             ROTTEN POTATOES
           </h1>
-          <p className="text-gray-300 mt-2 text-xl tracking-wider text-center">
+          <p className="text-gray-300 mt-2 lg:text-xl text-lg tracking-wider text-center">
             A place for picky students all around the world.
           </p>
         </div>
       </div>
 
-      <div className="flex items-center justify-center">
-        <div className="w-[400px]">
+      <div className="flex lg:items-center lg:pt-0 pt-16 justify-center">
+        <div className="lg:w-[400px]">
           <h1 className="text-2xl mb-2">Register Your Account</h1>
           <hr />
           <Form

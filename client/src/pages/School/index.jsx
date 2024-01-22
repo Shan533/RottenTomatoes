@@ -91,7 +91,7 @@ function School() {
 
       <div id="Programs" className="mt-5 mb-10">
         <span className="text-gray-600 font-semibold text-xl">Programs</span>
-        <div className="mt-2 flex gap-10">
+        <div className="mt-2 lg:flex grid grid-cols-2 gap-10">
           {programs.map((program) => {
             return (
               <div

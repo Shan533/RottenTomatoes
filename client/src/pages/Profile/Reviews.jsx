@@ -62,8 +62,10 @@ function Reviews() {
           allowHalf
           value={record.rating}
           style={{ color: "darkred" }}
+          className="lg:text-lg text-xs"
         />
       ),
+      sorter: (a, b) => a.rating - b.rating,
     },
     {
       title: "Review",
@@ -73,6 +75,7 @@ function Reviews() {
       title: "Date & Time",
       dataIndex: "createdAt",
       render: (text, record) => getDateTimeFormat(record.createdAt),
+      sorter: (a, b) => a.rating - b.rating,
     },
     {
       title: "Actions",
@@ -101,7 +104,7 @@ function Reviews() {
 
   return (
     <div>
-      <Table dataSource={reviews} columns={columns} />
+      <Table dataSource={reviews} columns={columns} size="small" />
       {showReviewForm && (
         <ReviewForm
           showReviewForm={showReviewForm}
