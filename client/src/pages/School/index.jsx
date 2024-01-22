@@ -15,6 +15,10 @@ function School() {
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
+  const handleLinkClick = (e) => {
+    e.preventDefault();
+    window.open(`${school?.link}`, "_blank");
+  };
 
   const getData = async () => {
     try {
@@ -52,9 +56,7 @@ function School() {
             <div className="flex justify-between">
               <span>{school?.initial}</span>
               <span
-                onClick={() => {
-                  navigate(school?.link);
-                }}
+                onClick={handleLinkClick}
                 className="cursor-pointer underline"
               >
                 Go to website
