@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { message, Rate } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { SetLoading } from "../../redux/loadersSlice";
 import { GetAllPrograms } from "../../apis/programs";
 import { getDateFormat } from "../../helpers";
 import { useNavigate } from "react-router-dom";
+import Filters from "../../components/Filters";
 
 function Home() {
+  const [filters, setFilters] = useState({
+    search: "",
+    degree: "",
+    country: "",
+  });
   const navigate = useNavigate();
   const [programs, setPrograms] = useState([]);
-  const { user } = useSelector((state) => state.users);
 
   const dispatch = useDispatch();
 
   const getData = async () => {
     try {
       dispatch(SetLoading(true));
-      const response = await GetAllPrograms();
+      const response = await GetAllPrograms(filters);
       setPrograms(response.data);
       dispatch(SetLoading(false));
     } catch (error) {
@@ -27,10 +32,11 @@ function Home() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [filters.degree, filters.country]);
 
   return (
     <div>
+      <Filters filters={filters} setFilters={setFilters} />
       <div className="grid grid-cols-1 sm-grid-cols-2 lg:grid-cols-4 gap-10 text-gray-600">
         {programs.map((program) => (
           <div

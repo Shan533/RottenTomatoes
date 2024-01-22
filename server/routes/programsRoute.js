@@ -18,8 +18,15 @@ router.post("/", authMiddleware, async (req, res) => {
 // get all programs
 router.get("/", async (req, res) => {
   try {
-    const { school } = req.params;
-    const programs = await Program.find()
+    const filters = req.query;
+    const query = {};
+    if (filters.degree) {
+      query.degree = filters.degree;
+    }
+    if (filters.country) {
+      query.country = filters.country;
+    }
+    const programs = await Program.find(query)
       .populate("schoolOf")
       .populate("createdBy")
       .sort({ createdAt: -1 });
