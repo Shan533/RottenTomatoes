@@ -31,7 +31,7 @@ function ProtectedPage({ children }) {
 
   return (
     <div>
-      <div className="flex justify-between items-center bg-primary p-5">
+      <div className="flex justify-between items-center bg-primary p-5 pl-10 pr-10">
         <span
           className="font-semibold text-green-400 tracking-wider text-2xl cursor-pointer"
           onClick={() => {

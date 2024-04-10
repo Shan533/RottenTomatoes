@@ -16,7 +16,7 @@ router.post("/", authMiddleware, async (req, res) => {
 // get all schools
 router.get("/", authMiddleware, async (req, res) => {
   try {
-    const schools = await School.find().sort({ createdAt: -1 });
+    const schools = await School.find().sort({ rankingQS: 1 });
     res.json({ data: schools, success: true });
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });

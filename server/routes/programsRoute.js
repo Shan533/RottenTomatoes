@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
     const programs = await Program.find(query)
       .populate("schoolOf")
       .populate("createdBy")
-      .sort({ createdAt: -1 });
+      .sort({ rating: -1 });
     res.status(200).json({ data: programs, success: true });
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });
