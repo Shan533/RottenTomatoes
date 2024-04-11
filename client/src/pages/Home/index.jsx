@@ -68,8 +68,8 @@ function Home() {
   return (
     <div className="pl-5 pr-5">
       <div id="twoCards" className="mt-5 mb-10 ">
-        <Row gutter={16}>
-          <Col span={12}>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12}>
             <Card
               title="QS Ranking Award"
               headStyle={{
@@ -110,7 +110,7 @@ function Home() {
               />
             </Card>
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={24} md={12}>
             <Card
               title="Students' Selection Award"
               headStyle={{
@@ -137,13 +137,13 @@ function Home() {
                   },
                   {
                     title: "Program",
-                    dataIndex: "name",
-                    render: (name, record) => (
+                    dataIndex: "initial",
+                    render: (text, record) => (
                       <span
                         style={{ cursor: "pointer" }}
                         onClick={() => navigate(`/program/${record._id}`)}
                       >
-                        {name}
+                        {text}
                       </span>
                     ),
                   },
@@ -168,7 +168,7 @@ function Home() {
       </div>
       <h1 className="text-gray-600 text-2xl">All Programs</h1>
       <Filters filters={filters} setFilters={setFilters} />
-      <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-10 text-gray-600">
+      <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-10 text-gray-600 pt-4">
         {programs.map((program) => (
           <div
             key={program?._id}
