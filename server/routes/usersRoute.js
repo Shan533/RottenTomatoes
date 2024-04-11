@@ -48,10 +48,16 @@ router.post("/login", async (req, res) => {
       expiresIn: "1d",
     });
 
+    // Calculate token expiration time
+    const expiresIn = 24 * 60 * 60; // 1 day in seconds
+
     res.status(200).json({
       message: "User logged in successfully",
       success: true,
-      data: token,
+      data: {
+        token,
+        expiresIn,
+      },
     });
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });

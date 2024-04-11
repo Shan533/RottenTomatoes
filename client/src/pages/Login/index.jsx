@@ -9,12 +9,20 @@ import { SetLoading } from "../../redux/loadersSlice";
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const onFinish = async (values) => {
     try {
       dispatch(SetLoading(true));
       const response = await LoginUser(values);
       dispatch(SetLoading(false));
-      localStorage.setItem("token", response.data);
+
+      // Store the token and expiration time in local storage
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem(
+        "tokenExpires",
+        Date.now() + response.data.expiresIn * 1000
+      );
+
       message.success(response.message);
       navigate("/");
     } catch (error) {
@@ -24,10 +32,14 @@ function Login() {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    // Check if token exists and has not expired
+    const token = localStorage.getItem("token");
+    const tokenExpires = localStorage.getItem("tokenExpires");
+
+    if (token && tokenExpires && Date.now() < parseInt(tokenExpires)) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="grid lg:grid-cols-2 h-screen">

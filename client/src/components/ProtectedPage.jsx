@@ -10,6 +10,7 @@ function ProtectedPage({ children }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
+
   const getCurrentUser = async () => {
     try {
       dispatch(SetLoading(true));
@@ -17,12 +18,25 @@ function ProtectedPage({ children }) {
       dispatch(SetLoading(false));
       dispatch(SetUser(response.data));
     } catch (error) {
-      message.error(error.message);
+      if (error.response && error.response.status === 401) {
+        // Token has expired or is invalid
+        localStorage.removeItem("token");
+        localStorage.removeItem("tokenExpires");
+        navigate("/login");
+      } else {
+        message.error(error.message);
+      }
     }
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
+    const token = localStorage.getItem("token");
+    const tokenExpires = localStorage.getItem("tokenExpires");
+
+    if (!token || !tokenExpires || Date.now() > parseInt(tokenExpires)) {
+      // Token doesn't exist or has expired
+      localStorage.removeItem("token");
+      localStorage.removeItem("tokenExpires");
       navigate("/login");
     } else {
       getCurrentUser();
