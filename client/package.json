@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.0.0",
     "antd": "^5.11.5",
     "axios": "^1.6.2",
+    "generate-password": "^1.7.1",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

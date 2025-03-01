@@ -37,3 +37,12 @@ export const GetAllUsers = async () => {
     endPoint: "/api/users/get-all-users",
   });
 };
+
+export const RegisterGoogle = async (payload) => {
+  return await apiRequest({
+    method: "POST",
+    endPoint: "/api/users/register-google",
+    payload,
+  });
+};
+

@@ -108,3 +108,7 @@ table {
   align-items: center;
   justify-items: center;
 }
+
+.gray {
+  background-color: #fafafa;
+}

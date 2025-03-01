@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../redux/usersSlice";
 import { SetLoading } from "../redux/loadersSlice";
+import Navbar from "./Navbar";
 
 function ProtectedPage({ children }) {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ function ProtectedPage({ children }) {
 
   return (
     <div>
-      <div className="flex justify-between items-center bg-primary p-5 pl-10 pr-10">
+      <div className="flex justify-between items-center bg-primary pt-5 pb-2 px-10">
         <span
           className="font-semibold text-green-400 tracking-wider text-2xl cursor-pointer"
           onClick={() => {
@@ -74,6 +75,7 @@ function ProtectedPage({ children }) {
           ></i>
         </div>
       </div>
+      <Navbar />
 
       {user && <div className="p-5">{children}</div>}
     </div>

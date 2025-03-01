@@ -3,6 +3,9 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
+const { OAuth2Client } = require('google-auth-library');
+
+const client = new OAuth2Client(process.env.CLIENT_ID, process.env.CLIENT_SECRET);
 
 // Register
 router.post("/register", async (req, res) => {
@@ -116,6 +119,51 @@ router.get("/get-all-users", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });
   }
+});
+
+// Google Registration API
+router.post("/register-google", async (req, res) => {
+    const { token } = req.body; // Expecting the Google token from the client
+
+    try {
+        // Verify the token
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
+        });
+        const payload = ticket.getPayload();
+
+        // Check if user already exists
+        let user = await User.findOne({ email: payload.email });
+        if (!user) {
+            // Create a new user if they don't exist
+            user = new User({
+                name: payload.name,
+                email: payload.email,
+                googleId: payload.sub, // Google ID
+                profilePic: payload.picture, // Optional: Store profile picture
+                isAdmin: false, // Default value
+                isActive: true, // Default value
+                password: null, // No password for Google users
+            });
+            await user.save();
+        }
+
+        // Generate a token for the user (optional)
+        const token = jwt.sign({ userId: user._id }, process.env.jwt_secret, { expiresIn: "1d" });
+
+        res.status(201).json({
+            message: "User registered successfully",
+            success: true,
+            data: {
+                userId: user._id,
+                token,
+            },
+        });
+    } catch (error) {
+        console.error("Error during Google registration", error);
+        res.status(500).json({ message: "Internal server error", success: false });
+    }
 });
 
 module.exports = router;

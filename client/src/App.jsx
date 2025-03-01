@@ -10,6 +10,9 @@ import Admin from "./pages/Admin";
 import ProgramForm from "./pages/Admin/Programs/ProgramForm";
 import ProgramInfo from "./pages/ProgramInfo";
 import School from "./pages/School";
+import ProgramsPage from "./pages/Home/ProgramsPage/ProgramsPage";
+import SchoolsPage from "./pages/Home/SchoolsPage/SchoolsPage";
+import ReviewsPage from "./pages/Home/ReviewsPage/ReviewsPage";
 
 function App() {
   const { loading } = useSelector((state) => state.loaders);
@@ -23,6 +26,30 @@ function App() {
             element={
               <ProtectedPage>
                 <Home />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/programspage"
+            element={
+              <ProtectedPage>
+                <ProgramsPage />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/schoolspage"
+            element={
+              <ProtectedPage>
+                <SchoolsPage />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/reviewspage"
+            element={
+              <ProtectedPage>
+                <ReviewsPage />
               </ProtectedPage>
             }
           />

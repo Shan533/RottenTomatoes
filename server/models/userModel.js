@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: true,
     },
+    googleId: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true }
 );
