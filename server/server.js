@@ -18,7 +18,7 @@ app.use("/api/programs", programsRoute);
 app.use("/api/reviews", reviewsRoute);
 app.use("/api/filters", filtersRoute);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 
 const path = require("path");
 __dirname = path.resolve();
