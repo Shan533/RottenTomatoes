@@ -5,6 +5,8 @@ import { LoginUser } from "../../apis/users";
 import { antValidationError } from "../../helpers";
 import { useDispatch } from "react-redux";
 import { SetLoading } from "../../redux/loadersSlice";
+import { GoogleLogin } from "@react-oauth/google";
+import { LoginGmail } from "../../apis/oauth";
 
 function Login() {
   const navigate = useNavigate();
@@ -14,7 +16,6 @@ function Login() {
     try {
       dispatch(SetLoading(true));
       const response = await LoginUser(values);
-      dispatch(SetLoading(false));
 
       // Store the token and expiration time in local storage
       localStorage.setItem("token", response.data.token);
@@ -23,12 +24,37 @@ function Login() {
         Date.now() + response.data.expiresIn * 1000
       );
 
+      dispatch(SetLoading(false));
       message.success(response.message);
       navigate("/");
     } catch (error) {
       dispatch(SetLoading(false));
       message.error(error.message);
     }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      dispatch(SetLoading(true));
+      const token = credentialResponse.credential; // The Google ID token
+      if (!token) {
+        return message.error("Google login failed: Missing token");
+      }
+
+      const response = await LoginGmail({ token });
+      localStorage.setItem("token", response.data.token);
+
+      dispatch(SetLoading(false));
+      message.success(response.message);
+      navigate("/");
+    } catch (error) {
+      dispatch(SetLoading(false));
+      message.error(error.message);
+    }
+  };
+
+  const handleGoogleError = () => {
+    message.error("Google login failed");
   };
 
   useEffect(() => {
@@ -78,6 +104,10 @@ function Login() {
               <Button type="primary" htmlType="submit" block>
                 Login
               </Button>
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+              />
 
               <Link to="/register">Don't have an account? Register here.</Link>
             </div>

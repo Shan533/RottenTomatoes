@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, message, Input } from "antd";
 import { Link } from "react-router-dom";
 import { RegisterUser } from "../../apis/users";
@@ -6,13 +6,42 @@ import { useNavigate } from "react-router-dom";
 import { antValidationError } from "../../helpers";
 import { useDispatch } from "react-redux";
 import { SetLoading } from "../../redux/loadersSlice";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { RegisterGmail } from "../../apis/oauth";
 
 function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
+
+  const [googleData, setGoogleData] = useState({
+    token: "",
+    email: "",
+  });
+
   const onFinish = async (values) => {
     try {
       dispatch(SetLoading(true));
+
+      if (googleData.token) {
+        const { name, password } = values;
+        const response = await RegisterGmail({
+          token: googleData.token,
+          name,
+          password,
+        });
+
+        if (response.data.token) {
+          localStorage.setItem("token", response.data.token);
+        }
+        message.success(
+          response.message || "Registration successful with Google!"
+        );
+        dispatch(SetLoading(false));
+        return navigate("/");
+      }
+
       const response = await RegisterUser(values);
       dispatch(SetLoading(false));
       message.success(response.message);
@@ -27,7 +56,42 @@ function Register() {
     if (localStorage.getItem("token")) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
+
+  const handleGoogleRegisterSuccess = async (credentialResponse) => {
+    try {
+      dispatch(SetLoading(true));
+      const token = credentialResponse.credential;
+      if (!token) {
+        dispatch(SetLoading(false));
+        return message.error("Google registration failed: no token");
+      }
+
+      const decoded = jwtDecode(token);
+      if (!decoded.email) {
+        dispatch(SetLoading(false));
+        return message.error("Could not retrieve email from Google");
+      }
+
+      setGoogleData({
+        token,
+        email: decoded.email,
+      });
+
+      form.setFieldsValue({ email: decoded.email });
+      message.info(
+        "Google Authenticated! Please set username and password to complete registration."
+      );
+      dispatch(SetLoading(false));
+    } catch (error) {
+      dispatch(SetLoading(false));
+      message.error(error.message);
+    }
+  };
+
+  const handleGoogleRegisterError = () => {
+    message.error("Google registration failed");
+  };
 
   return (
     <div className="grid lg:grid-cols-2 h-screen">
@@ -47,6 +111,7 @@ function Register() {
           <h1 className="text-2xl mb-2">Register Your Account</h1>
           <hr />
           <Form
+            form={form}
             layout="vertical"
             className="flex flex-col gap-5 mt-3"
             onFinish={onFinish}
@@ -69,6 +134,10 @@ function Register() {
               <Button type="primary" htmlType="submit" block>
                 Register
               </Button>
+              <GoogleLogin
+                onSuccess={handleGoogleRegisterSuccess}
+                onError={handleGoogleRegisterError}
+              />
 
               <Link to="/login">Already have an account? Login here.</Link>
             </div>
