@@ -6,6 +6,7 @@ import { antValidationError } from "../../helpers";
 import { useDispatch } from "react-redux";
 import { SetLoading } from "../../redux/loadersSlice";
 import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 import { LoginGmail } from "../../apis/oauth";
 
 function Login() {
@@ -38,15 +39,27 @@ function Login() {
       dispatch(SetLoading(true));
       const token = credentialResponse.credential; // The Google ID token
       if (!token) {
+        dispatch(SetLoading(false));
         return message.error("Google login failed: Missing token");
       }
 
       const response = await LoginGmail({ token });
-      localStorage.setItem("token", response.data.token);
 
-      dispatch(SetLoading(false));
-      message.success(response.message);
-      navigate("/");
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        dispatch(SetLoading(false));
+        message.success(response.message);
+        navigate("/");
+      } else {
+        // If the user is not registered, redirect to the registration page
+        const decoded = jwtDecode(token);
+        navigate("/register", {
+          state: {
+            googleData: { token, email: decoded.email, name: decoded.name },
+          },
+        });
+        dispatch(SetLoading(false));
+      }
     } catch (error) {
       dispatch(SetLoading(false));
       message.error(error.message);

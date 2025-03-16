@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, message, Input } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RegisterUser } from "../../apis/users";
-import { useNavigate } from "react-router-dom";
 import { antValidationError } from "../../helpers";
 import { useDispatch } from "react-redux";
 import { SetLoading } from "../../redux/loadersSlice";
@@ -13,12 +12,24 @@ import { RegisterGmail } from "../../apis/oauth";
 function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const [form] = Form.useForm();
 
   const [googleData, setGoogleData] = useState({
     token: "",
     email: "",
+    name: "",
   });
+
+  useEffect(() => {
+    if (location.state && location.state.googleData) {
+      setGoogleData(location.state.googleData);
+      form.setFieldsValue({
+        email: location.state.googleData.email,
+        name: location.state.googleData.name,
+      });
+    }
+  }, [location.state, form]);
 
   const onFinish = async (values) => {
     try {
@@ -76,12 +87,10 @@ function Register() {
       setGoogleData({
         token,
         email: decoded.email,
+        name: decoded.name,
       });
 
-      form.setFieldsValue({ email: decoded.email });
-      message.info(
-        "Google Authenticated! Please set username and password to complete registration."
-      );
+      form.setFieldsValue({ email: decoded.email, name: decoded.name });
       dispatch(SetLoading(false));
     } catch (error) {
       dispatch(SetLoading(false));
